@@ -77,6 +77,10 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
      * to incorporate impact of the highest bits that would otherwise
      * never be used in index calculations because of table bounds.
      */
+    /*static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }*/
     static final int hash(Object key) {
         int h = (Math.abs((h = key.hashCode()) ^ (h << 16)));
         return (key == null) ? 0 : h;
@@ -301,8 +305,7 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
         else if (p.hash == hash && (p.key == key || key.equals(p.key))) {
             return p;
         }
-
-        boolean loop = true;
+        boolean loop = m < sizes[28];
         do {
             if(tab[lastPlacedPos] == null){
                 tab[lastPlacedPos] = newNode(hash, key, value, null);
@@ -368,7 +371,8 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
 
 
     private int getIndex(int hash, int m){
-        return hash % (m - 1);
+        return (hash % m);
+        //return ((m - 1) & hash);
     }
 
     /**

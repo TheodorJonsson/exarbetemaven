@@ -83,7 +83,7 @@ class TestCoalescedHashing {
         HashMapCoalesced<Integer, String> hashMap = new HashMapCoalesced<>();
         ArrayList<Integer> randlist = new ArrayList<>();
         int j = 0;
-        while (j < 10000) {
+        while (j < 100000) {
             int rand = (int) (Math.random() * (10000000 - (1)) + 0);
             if (!randlist.contains(rand)) {
                 randlist.add(rand);
@@ -91,7 +91,7 @@ class TestCoalescedHashing {
             }
         }
         System.out.println("Done with arraylist inserts");
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100000; i++) {
             if (hashMap.put(randlist.get(i), Integer.toString(i)) == null) {
                 assertEquals(Integer.toString(i), hashMap.get(randlist.get(i)));
             }
@@ -104,7 +104,7 @@ class TestCoalescedHashing {
         HashMap<Integer, String> hashMap = new HashMap<>();
         ArrayList<Integer> randlist = new ArrayList<>();
         int j = 0;
-        while (j < 10000) {
+        while (j < 100000) {
             int rand = (int) (Math.random() * (10000000 - (1)) + 0);
             if (!randlist.contains(rand)) {
                 randlist.add(rand);
@@ -112,7 +112,7 @@ class TestCoalescedHashing {
             }
         }
         System.out.println("Done with arraylist inserts");
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100000; i++) {
             if (hashMap.put(randlist.get(i), Integer.toString(i)) == null) {
                 assertEquals(Integer.toString(i), hashMap.get(randlist.get(i)));
             }

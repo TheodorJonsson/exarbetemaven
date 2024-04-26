@@ -79,6 +79,11 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
      * to incorporate impact of the highest bits that would otherwise
      * never be used in index calculations because of table bounds.
      */
+
+    /*static final int hash1(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }*/
     static final int hash1(Object key) {
         int h = (Math.abs((h = key.hashCode()) ^ (h << 16)));
         return (key == null) ? 0 : h;
@@ -299,9 +304,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
         return null;
     }
 
-    private int getC(int hash2, int m) {
-        return (hash2 % (m - 2)) + 1;
-    }
+
 
     private Node<K, V> doubleHashingInsert(int hash, K key, V value, Node<K, V>[] tab, int m) {
         int i;
@@ -321,7 +324,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
         }
         // Loop through the array until it finds an empty slot.
         else{
-            boolean loop = m < MAXIMUM_CAPACITY;
+            boolean loop = m < sizes[28];
             int j = i - c;
             do {
                 if(j < 0){
@@ -390,10 +393,16 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
         return null;
     }
 
+    // Gets the value used to calculate the length of the jumps in the traversal
+    private int getC(int hash2, int m) {
+        //return ((m-2) & hash2) + 1;
+        return (hash2 % (m - 2)) + 1;
+    }
 
-
+    // Gets the index to place in the table
     private int getIndex(int hash, int m){
-        return hash % (m - 1);
+        return (hash % m);
+        //return ((m - 1) & hash);
     }
 
     /**
