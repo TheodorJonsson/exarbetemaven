@@ -155,8 +155,8 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
      */
     transient int size;
 
-    static int sizePos = 0;
-    static int[] sizes = {11, 23, 47, 97, 197, 397, 797, 1597, 3203, 6421, 12853,
+    int sizePos = 0;
+    int[] sizes = {11, 23, 47, 97, 197, 397, 797, 1597, 3203, 6421, 12853,
                             25717, 51437, 102877, 205759, 411527, 823117, 1646237, 3292489, 6584983,
                             13169977, 26339969, 52679969, 105359939, 210719881, 421439783, 842879579, 1685759167, 2147483647};
     /**
@@ -210,8 +210,15 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
         if (loadFactor <= 0 || Float.isNaN(loadFactor))
             throw new IllegalArgumentException("Illegal load factor: " +
                     loadFactor);
+        int i = 0;
+        while(initialCapacity > sizes[i]){
+            i++;
+        }
+        sizePos = i;
+        Node<K, V>[] newTab = (Node<K, V>[]) new Node[sizes[sizePos]];
+        table = newTab;
         this.loadFactor = loadFactor;
-        this.threshold =  tableSizeFor(initialCapacity);
+        this.threshold = (int)(sizes[sizePos] * this.loadFactor);
     }
 
     /**
@@ -234,8 +241,10 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
      * (16) and the default load factor (0.75).
      */
     public HashMapDouble() {
-        //this.threshold = tableSizeFor(11);
+        Node<K, V>[] newTab = (Node<K, V>[]) new Node[sizes[sizePos]];
+        table = newTab;
         this.loadFactor = DEFAULT_LOAD_FACTOR;
+        this.threshold = (int)(sizes[sizePos] * this.loadFactor);
     }
 
     /**
@@ -281,14 +290,14 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
         Node<K, V> node;
         K k;
         if ((tab = table) != null && (m = tab.length) > 0 && (node = tab[i = getIndex(hash, m)]) != null) {
-            int hash2 = hash2(key);
-            int c = getC(hash2, m);
             // get the hash index and checks if the key matches with the indexes key
             if (node.hash == hash && ((k = node.key) == key || (key != null && key.equals(k)))) {
                 // returns the node at the index if it does.
                 return node;
             }// if it doesn't hash the key again using the second hash function h2(k)
             else {
+                int hash2 = hash2(key);
+                int c = getC(hash2, m);
                 int j = i - c;
                 do {
                     if (j < 0) {
@@ -306,16 +315,20 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
 
 
 
-    private Node<K, V> doubleHashingInsert(int hash, K key, V value, Node<K, V>[] tab, int m) {
+    private Node<K, V> doubleHashingInsert(int hash, K key, V value, Node<K, V>[] tab, int m, Node<K, V> oldNode) {
         int i;
-        Node<K, V> p, d;
-        int hash2 = hash2(key);
-        int c = getC(hash2, m);
+        Node<K, V> p;
         p = tab[i = getIndex(hash, m)];
-
         // If the index is empty then it places the value in the table
         if (p == null) {
-            tab[i] = newNode(hash,0, key, value, null);
+            // Used when resizing as to not create a new node.
+            if(oldNode != null){
+                tab[i] = oldNode;
+            }
+            else{
+                tab[i] = newNode(hash,0, key, value, null);
+            }
+
             return null;
         }
         // Checks if the key is already mapped and if it is just return the node
@@ -325,16 +338,23 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
         // Loop through the array until it finds an empty slot.
         else{
             boolean loop = m < sizes[28];
+            int hash2 = hash2(key);
+            int c = getC(hash2, m);
             int j = i - c;
             do {
                 if(j < 0){
                     j += m;
                 }else if (j == i) {
-                    loop = false;
+                    return null;
                 }
                 if((p = tab[j]) == null){
-                    tab[j] = newNode(hash, c, key, value, null);
-                    loop = false;
+                    if(oldNode != null){
+                        tab[j] = oldNode;
+                    }
+                    else{
+                        tab[j] = newNode(hash,0, key, value, null);
+                    }
+                    return null;
                 } else if (p.hash == hash && (p.key == key || key.equals(p.key))) {
                     return p;
                 }
@@ -371,14 +391,15 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
      * @return
      */
     final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict){
-        Node<K,V>[] tab;
+        Node<K,V>[] tab = table;
         Node<K,V> p;
         int m, i;
         // Checks if there is a table or if the table is size 0 it will resize the table.
-        if ((tab = table) == null || (m = tab.length) == 0) {
+
+        if ((tab == null) || (m = tab.length) == 0) {
             m = (tab = resize()).length;
         }
-        p = doubleHashingInsert(hash, key, value, tab, m);
+        p = doubleHashingInsert(hash, key, value, tab, m, null);
         if(p != null){
             V oldVal = p.value;
             if(!onlyIfAbsent || oldVal == null){
@@ -416,7 +437,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
      */
     final Node<K,V>[] resize() {
         Node<K,V>[] oldTab = table;
-        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        int oldCap = sizes[sizePos];
         int oldThr = threshold;
         int newCap, newThr = 0;
         if (oldCap > 0) {
@@ -433,6 +454,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
         }
         if (newThr == 0) {
             float ft = (float)newCap * loadFactor;
+
             newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
                     (int)ft : Integer.MAX_VALUE);
         }
@@ -445,7 +467,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
                 Node<K,V> e;
                 if((e = oldTab[j]) != null){
                     oldTab[j] = null;
-                    doubleHashingInsert(e.hash,e.key,e.value,newTab,newCap);
+                    doubleHashingInsert(e.hash,e.key,e.value,newTab,newCap, e);
                 }
             }
         }

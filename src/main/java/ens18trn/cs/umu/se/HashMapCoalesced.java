@@ -148,8 +148,8 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
      * The number of key-value mappings contained in this map.
      */
     transient int size;
-    static int sizePos = 0;
-    static int[] sizes = {11, 23, 47, 97, 197, 397, 797, 1597, 3203, 6421, 12853,
+    int sizePos = 0;
+    int[] sizes = {11, 23, 47, 97, 197, 397, 797, 1597, 3203, 6421, 12853,
             25717, 51437, 102877, 205759, 411527, 823117, 1646237, 3292489, 6584983,
             13169977, 26339969, 52679969, 105359939, 210719881, 421439783, 842879579, 1685759167, 2147483647};
     int lastPlacedPos;
@@ -205,7 +205,16 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
         if (loadFactor <= 0 || Float.isNaN(loadFactor))
             throw new IllegalArgumentException("Illegal load factor: " +
                     loadFactor);
+        int i = 0;
+        while(initialCapacity > sizes[i]){
+            i++;
+        }
+        sizePos = i;
+        Node<K, V>[] newTab = (Node<K, V>[]) new Node[sizes[sizePos]];
+        table = newTab;
+        this.lastPlacedPos = sizes[sizePos] - 1;
         this.loadFactor = loadFactor;
+        this.threshold = (int)(sizes[sizePos] * this.loadFactor);
     }
 
     /**
@@ -228,7 +237,11 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
      * (16) and the default load factor (0.75).
      */
     public HashMapCoalesced() {
-        this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
+        Node<K, V>[] newTab = (Node<K, V>[]) new Node[sizes[sizePos]];
+        table = newTab;
+        this.lastPlacedPos = sizes[sizePos] - 1;
+        this.loadFactor = DEFAULT_LOAD_FACTOR;
+        this.threshold = (int)(sizes[sizePos] * this.loadFactor);
     }
 
     /**
@@ -293,12 +306,18 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
         return null;
     }
 
-    private Node<K, V> coalescedHashingInsert(int hash, K key, V value, Node<K, V>[] tab, int m){
+    private Node<K, V> coalescedHashingInsert(int hash, K key, V value, Node<K, V>[] tab, int m, Node<K, V> oldNode){
         int i;
         Node<K,V> p = tab[i = getIndex(hash, m)];
         // If the index is empty then it places the value in the table
         if (p == null) {
-            tab[i] = newNode(hash, key, value, null);
+            if(oldNode != null) {
+                tab[i] = oldNode;
+                tab[i].next = null;
+            }
+            else{
+                tab[i] = newNode(hash, key, value, null);
+            }
             return null;
         }
         // Checks if the key is already mapped and if it is just return the node
@@ -306,9 +325,15 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
             return p;
         }
         boolean loop = m < sizes[28];
-        do {
+        while(lastPlacedPos > 0 && loop){
             if(tab[lastPlacedPos] == null){
-                tab[lastPlacedPos] = newNode(hash, key, value, null);
+                if(oldNode != null) {
+                    tab[lastPlacedPos] = oldNode;
+                    tab[lastPlacedPos].next = null;
+                }
+                else{
+                    tab[lastPlacedPos] = newNode(hash, key, value, null);
+                }
                 while(p.next != null){
                     p = p.next;
                 }
@@ -316,7 +341,7 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
                 loop = false;
             }
             lastPlacedPos--;
-        } while(lastPlacedPos > 0 && loop);
+        }
         return null;
     }
 
@@ -354,7 +379,7 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
         if ((tab = table) == null || (m = tab.length) == 0) {
             m = (tab = resize()).length;
         }
-        p = coalescedHashingInsert(hash, key, value, tab, m);
+        p = coalescedHashingInsert(hash, key, value, tab, m, null);
         if(p != null){
             V oldVal = p.value;
             if(!onlyIfAbsent || oldVal == null){
@@ -416,7 +441,7 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
                 Node<K,V> e;
                 if((e = oldTab[j]) != null){
                     oldTab[j] = null;
-                    coalescedHashingInsert(e.hash,e.key,e.value,newTab,newCap);
+                    coalescedHashingInsert(e.hash,e.key,e.value,newTab,newCap, e);
                 }
             }
         }
