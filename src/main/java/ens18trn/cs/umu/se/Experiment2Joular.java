@@ -1,6 +1,7 @@
 package ens18trn.cs.umu.se;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -21,43 +22,25 @@ public class Experiment2Joular {
     }
 
     private void setup() {
-        Random rand1 = new Random();
-        rand1.setSeed(1234);
-        Random rand2 = new Random();
-        rand2.setSeed(3456);
-        Random rand3 = new Random();
-        rand3.setSeed(6798);
-        Random rand4 = new Random();
-        rand4.setSeed(6354);
-        while(randomList1.size() < iterations[0]){
-            int rand = rand1.nextInt();
-            if(!randomList1.contains(rand)){
-                randomList1.add(rand);
-            }
+        for(int i = 0; i < iterations[0]; i++){
+            randomList1.add(i);
         }
+        for(int i = 0; i < iterations[1]; i++){
+            randomList2.add(i);
+        }
+        for(int i = 0; i < iterations[2]; i++){
+            randomList3.add(i);
+        }
+        for(int i = 0; i < iterations[3]; i++){
+            randomList4.add(i);
+        }
+        Collections.shuffle(randomList1, new Random(1234));
+        Collections.shuffle(randomList2, new Random(3456));
+        Collections.shuffle(randomList2, new Random(6798));
+        Collections.shuffle(randomList2, new Random(6354));
         randomLists.add(randomList1);
-        // Removed for JMH tests
-        while(randomList2.size() < iterations[1]){
-            int rand = rand2.nextInt();
-            if(!randomList2.contains(rand)){
-                randomList2.add(rand);
-            }
-        }
         randomLists.add(randomList2);
-        while(randomList3.size() < iterations[2]){
-            int rand = rand3.nextInt();
-            if(!randomList3.contains(rand)){
-                randomList3.add(rand);
-            }
-
-        }
         randomLists.add(randomList3);
-        while(randomList4.size() < iterations[3]){
-            int rand = rand4.nextInt();
-            if(!randomList4.contains(rand)){
-                randomList4.add(rand);
-            }
-        }
         randomLists.add(randomList4);
     }
     /**
