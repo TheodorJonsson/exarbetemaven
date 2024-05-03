@@ -17,7 +17,7 @@ public class Main {
     public static float dhload = 0.6f;
     public static float chload = 0.6f;
     public static float defaultload = 0.6f;
-    public static int[] iterations = {100000, 300000, 400000};
+    public static int[] iterations = {1000000, 2000000, 3000000, 4000000};
     public static int[] capacity = {11, 10000, 100000, 1000000, 1000000, 10000000, 100000000};
     public static float[] loadFactors = {0.05f, 0.1f, 0.15f, 0.2f, 0.25f, 0.3f, 0.35f, 0.40f, 0.45f, 0.5f, 0.55f, 0.6f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1f};
     public static void main(String[] args) {
@@ -32,8 +32,8 @@ public class Main {
          * Experiment 1.
          * For JoularJX
          */
-        runExperiment1();
-        runExperiment2();
+        //runExperiment1();
+        //runExperiment2();
         //runExperiment3();
         //runExperiment4();
         //runExperiment5();
@@ -42,14 +42,16 @@ public class Main {
          */
         //runExperiment1load();
         //runExperiment4Load();
-        //runExperiment5Load();
+        runExperiment5Load();
     }
 
 
-
-
-
-
+    /**
+     * For each run, initialize the hashmap with a size of 100.000,
+     * then insert random generated numbers set with a seed into the hashmap until it reaches a load factor of 1,
+     * without any resizing of the table. The runtime, average time for insertions at load factor intervals of 0.05,
+     * and the energy consumption of each run will be measured in this experiment
+     */
     private static void runExperiment1() {
         int runs = 20, iterationNR = 4, capacities = 4;
         Experiment1 exp1 = new Experiment1();
@@ -74,6 +76,13 @@ public class Main {
         }
     }
 
+    /**
+     * For each run, initialize the hashmap their default size 11 for double hashing and coalesced and 16 for the default implementation,
+     * with a maximum load factor of 0.05 and then insert 100,000 amount of randomly generated numbers.
+     * Each run will increase the maximum load factor by 0.05 this will go on until the maximum load factor reaches 1.
+     * The best performing load factor will be selected and used in experiment 3.
+     * The runtime of each run and the energy consumption of each run will be measured in this experiment
+     */
     private static void runExperiment2(){
         int runs = 20, capacities = 4;
         Experiment2 exp2 = new Experiment2();
@@ -98,6 +107,12 @@ public class Main {
         }
     }
 
+    /**
+     * For each run, initialize the hashmap to x size and a set maximum load factor,
+     * then insert x amount of random generated numbers set with a seed into the hashmap until the amount of insertions is the same as
+     * the original table size. This is repeated for varying table sizes.
+     * The runtime of each run and the energy consumption of each run will be measured in this experiment.
+     */
     private static void runExperiment3(){
         int runs = 20, capacities = 4;
         Experiment3 exp3 = new Experiment3();
@@ -121,6 +136,13 @@ public class Main {
             }
         }
     }
+
+    /**
+     * For each run, initialize the hashmap to x size,
+     * then insert y random generated numbers set with a seed into the hashmap and at each interval of 0.05 load factor until 1,
+     * do z amount of lookups for values that exist within the hashmap.
+     * The average time for a lookup each load factor interval and the energy consumption of z amount of lookups at each load factor will be measured
+     */
     private static void runExperiment4(){
         int runs = 20, capacities = 4;
         Experiment4 exp4 = new Experiment4();
@@ -144,6 +166,13 @@ public class Main {
             }
         }
     }
+
+    /**
+     * For each run, initialize the hashmap to x size (same as 4),
+     * then insert random generated numbers set with a seed into the hashmap and at each interval of 0.05 load factor until 1,
+     * do z amount of lookups for values that do not exist within the hashmap.
+     * The average time for a lookup each load factor interval and the energy consumption of z amount of lookups at each load factor will be measured
+     */
     private static void runExperiment5(){
         int runs = 20, capacities = 4;
         Experiment5 exp5 = new Experiment5();

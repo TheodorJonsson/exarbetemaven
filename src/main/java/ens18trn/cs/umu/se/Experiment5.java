@@ -3,6 +3,7 @@ package ens18trn.cs.umu.se;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -32,8 +33,16 @@ public class Experiment5 {
         rand3.setSeed(6798);
         Random rand4 = new Random();
         rand4.setSeed(6354);
+        for(int i = 0; i < iterations[0]; i++){
+            randomList1.add(i);
+        }
+        for(int i = iterations[0]; i < iterations[1]; i++){
+            randomList2.add(i);
+        }
+        Collections.shuffle(randomList1, new Random(1234));
+        Collections.shuffle(randomList2, new Random(3456));
         System.out.println("Starting Experiment 5");
-        while(randomList1.size() < iterations[0]){
+        /*while(randomList1.size() < iterations[0]){
             int rand = rand1.nextInt();
             if(!randomList1.contains(rand)){
                 randomList1.add(rand);
@@ -47,7 +56,7 @@ public class Experiment5 {
             if(!randomList2.contains(rand) && !randomList1.contains(rand)){
                 randomList2.add(rand);
             }
-        }
+        }*/
         System.out.println("2");
     }
     /**

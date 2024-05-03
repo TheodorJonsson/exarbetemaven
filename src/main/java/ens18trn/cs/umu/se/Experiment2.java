@@ -1,6 +1,7 @@
 package ens18trn.cs.umu.se;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -37,12 +38,16 @@ public class Experiment2 {
         rand3.setSeed(6798);
         Random rand4 = new Random();
         rand4.setSeed(6354);
-        while(randomList1.size() < iterations[0]){
+        for(int i = 0; i < iterations[0]; i++){
+            randomList1.add(i);
+        }
+        Collections.shuffle(randomList1, new Random(1234));
+        /*while(randomList1.size() < iterations[0]){
             int rand = rand1.nextInt();
             if(!randomList1.contains(rand)){
                 randomList1.add(rand);
             }
-        }
+        }*/
         randomLists.add(randomList1);
         // Removed for JMH tests
         /*while(randomList2.size() < capAndIter[1]){

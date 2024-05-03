@@ -1,8 +1,7 @@
 package ens18trn.cs.umu.se;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
+
 import static ens18trn.cs.umu.se.Main.iterations;
 /**
  * Experiment 1: insertion only
@@ -29,14 +28,35 @@ public class Experiment1 {
     }
 
     private void setup() {
-        Random rand1 = new Random();
+/*Random rand1 = new Random();
         rand1.setSeed(1234);
         Random rand2 = new Random();
         rand2.setSeed(3456);
         Random rand3 = new Random();
         rand3.setSeed(6798);
         Random rand4 = new Random();
-        rand4.setSeed(6354);
+        rand4.setSeed(6354);*/
+        for(int i = 0; i < iterations[0]; i++){
+            randomList1.add(i);
+        }
+        for(int i = 0; i < iterations[1]; i++){
+            randomList2.add(i);
+        }
+        for(int i = 0; i < iterations[2]; i++){
+            randomList3.add(i);
+        }
+        for(int i = 0; i < iterations[3]; i++){
+            randomList4.add(i);
+        }
+        Collections.shuffle(randomList1, new Random(1234));
+        Collections.shuffle(randomList2, new Random(3456));
+        Collections.shuffle(randomList2, new Random(6798));
+        Collections.shuffle(randomList2, new Random(6354));
+        randomLists.add(randomList1);
+        randomLists.add(randomList2);
+        randomLists.add(randomList3);
+        randomLists.add(randomList4);
+        /*
         while(randomList1.size() < iterations[0]){
             int rand = rand1.nextInt();
             if(!randomList1.contains(rand)){
@@ -65,7 +85,7 @@ public class Experiment1 {
                 randomList4.add(rand);
             }
         }
-        randomLists.add(randomList4);
+        randomLists.add(randomList4);*/
     }
 
 
