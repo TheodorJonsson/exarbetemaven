@@ -20,7 +20,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @State(Scope.Benchmark)
 public class Experiment1JMH {
    private Experiment1 experiment;
-    @Param({"100000", "200000", "300000", "400000"})
+    @Param({"1646237", "3292489", "6584983", "13169977"})
     public int iterations;
    @Setup(Level.Trial)
     public void setup(){
@@ -29,22 +29,76 @@ public class Experiment1JMH {
 
    @Benchmark
    @BenchmarkMode({Mode.AverageTime})
-    public void testDefaultInsert(Experiment1JMH plan){
-       experiment.defaultSetup(plan.iterations);
-       experiment.defaultInsertTest(experiment.randomLists.get(plan.iterations/100000));
+    public void testDefaultInsert(Experiment1JMH plan) {
+       switch (iterations) {
+           case 1646237:
+               experiment.defaultSetup(plan.iterations);
+               experiment.defaultInsertTest(experiment.randomLists.get(0));
+               break;
+           case 3292489:
+               experiment.defaultSetup(plan.iterations);
+               experiment.defaultInsertTest(experiment.randomLists.get(1));
+               break;
+           case 6584983:
+               experiment.defaultSetup(plan.iterations);
+               experiment.defaultInsertTest(experiment.randomLists.get(2));
+               break;
+           case 13169977:
+               experiment.defaultSetup(plan.iterations);
+               experiment.defaultInsertTest(experiment.randomLists.get(3));
+               break;
+           default:
+               throw new IllegalArgumentException("invalid param");
+       }
    }
 
     @Benchmark
     @BenchmarkMode({Mode.AverageTime})
     public void testCoalescedInsert(Experiment1JMH plan){
-        experiment.chSetup(plan.iterations);
-        experiment.chInsertTest(experiment.randomLists.get(plan.iterations/100000));
-    }
+        switch (iterations) {
+            case 1646237:
+                experiment.chSetup(plan.iterations);
+                experiment.chInsertTest(experiment.randomLists.get(0));
+                break;
+            case 3292489:
+                experiment.chSetup(plan.iterations);
+                experiment.chInsertTest(experiment.randomLists.get(1));
+                break;
+            case 6584983:
+                experiment.chSetup(plan.iterations);
+                experiment.chInsertTest(experiment.randomLists.get(2));
+                break;
+            case 13169977:
+                experiment.chSetup(plan.iterations);
+                experiment.chInsertTest(experiment.randomLists.get(3));
+                break;
+            default:
+                throw new IllegalArgumentException("invalid param");
+        }
+   }
 
     @Benchmark
     @BenchmarkMode({Mode.AverageTime})
     public void testDoubletInsert(Experiment1JMH plan) {
-        experiment.dhSetup(plan.iterations);
-        experiment.dhInsertTest(experiment.randomLists.get(plan.iterations / 100000));
+        switch (iterations) {
+            case 1646237:
+                experiment.dhSetup(plan.iterations);
+                experiment.dhInsertTest(experiment.randomLists.get(0));
+                break;
+            case 3292489:
+                experiment.dhSetup(plan.iterations);
+                experiment.dhInsertTest(experiment.randomLists.get(1));
+                break;
+            case 6584983:
+                experiment.dhSetup(plan.iterations);
+                experiment.dhInsertTest(experiment.randomLists.get(2));
+                break;
+            case 13169977:
+                experiment.dhSetup(plan.iterations);
+                experiment.dhInsertTest(experiment.randomLists.get(3));
+                break;
+            default:
+                throw new IllegalArgumentException("invalid param");
+        }
     }
 }
