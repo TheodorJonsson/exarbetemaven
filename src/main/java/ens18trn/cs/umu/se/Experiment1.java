@@ -50,8 +50,8 @@ public class Experiment1 {
         }
         Collections.shuffle(randomList1, new Random(1234));
         Collections.shuffle(randomList2, new Random(3456));
-        Collections.shuffle(randomList2, new Random(6798));
-        Collections.shuffle(randomList2, new Random(6354));
+        Collections.shuffle(randomList3, new Random(6798));
+        Collections.shuffle(randomList4, new Random(6354));
         randomLists.add(randomList1);
         randomLists.add(randomList2);
         randomLists.add(randomList3);
