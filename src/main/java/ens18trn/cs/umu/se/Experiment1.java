@@ -2,7 +2,7 @@ package ens18trn.cs.umu.se;
 
 import java.util.*;
 
-import static ens18trn.cs.umu.se.Main.iterations;
+import static ens18trn.cs.umu.se.Main.iterationsPrime;
 /**
  * Experiment 1: insertion only
  *
@@ -36,16 +36,16 @@ public class Experiment1 {
         rand3.setSeed(6798);
         Random rand4 = new Random();
         rand4.setSeed(6354);*/
-        for(int i = 0; i < iterations[0]; i++){
+        for(int i = 0; i < iterationsPrime[0]; i++){
             randomList1.add(i);
         }
-        for(int i = 0; i < iterations[1]; i++){
+        for(int i = 0; i < iterationsPrime[1]; i++){
             randomList2.add(i);
         }
-        for(int i = 0; i < iterations[2]; i++){
+        for(int i = 0; i < iterationsPrime[2]; i++){
             randomList3.add(i);
         }
-        for(int i = 0; i < iterations[3]; i++){
+        for(int i = 0; i < iterationsPrime[3]; i++){
             randomList4.add(i);
         }
         Collections.shuffle(randomList1, new Random(1234));

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import static ens18trn.cs.umu.se.Main.iterations;
+import static ens18trn.cs.umu.se.Main.iterationsPrime;
 
 public class Experiment3 {
     public HashMap defaultHash;
@@ -22,16 +22,16 @@ public class Experiment3 {
     }
 
     private void setup() {
-        for(int i = 0; i < iterations[0]; i++){
+        for(int i = 0; i < iterationsPrime[0]; i++){
             randomList1.add(i);
         }
-        for(int i = 0; i < iterations[1]; i++){
+        for(int i = 0; i < iterationsPrime[1]; i++){
             randomList2.add(i);
         }
-        for(int i = 0; i < iterations[2]; i++){
+        for(int i = 0; i < iterationsPrime[2]; i++){
             randomList3.add(i);
         }
-        for(int i = 0; i < iterations[3]; i++){
+        for(int i = 0; i < iterationsPrime[3]; i++){
             randomList4.add(i);
         }
         Collections.shuffle(randomList1, new Random(1234));

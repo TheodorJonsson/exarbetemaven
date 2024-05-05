@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import static ens18trn.cs.umu.se.Main.iterations;
+import static ens18trn.cs.umu.se.Main.iterationsPrime;
 
 public class Experiment5LoadFactor {
     public HashMap defaultHash;
@@ -32,10 +32,10 @@ public class Experiment5LoadFactor {
         rand3.setSeed(6798);
         Random rand4 = new Random();
         rand4.setSeed(6354);
-        for(int i = 0; i < iterations[0]; i++){
+        for(int i = 0; i < iterationsPrime[0]; i++){
             randomList1.add(i);
         }
-        for(int i = iterations[0]; i < iterations[1]; i++){
+        for(int i = iterationsPrime[0]; i < iterationsPrime[1]; i++){
             randomList2.add(i);
         }
         Collections.shuffle(randomList1, new Random(1234));

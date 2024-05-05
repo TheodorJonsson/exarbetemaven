@@ -299,7 +299,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
                 int hash2 = hash2(key);
                 int c = getC(hash2, m);
                 int j = i - c;
-                do {
+                while (node != null && i != j) {
                     if (j < 0) {
                         j += m;
                     }
@@ -307,7 +307,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
                         return node;
                     }
                     j = j - c;
-                } while (node != null); // Loop through until it finds the node.
+                } // Loop through until it finds the node.
             }
         }
         return null;
@@ -341,7 +341,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
             int hash2 = hash2(key);
             int c = getC(hash2, m);
             int j = i - c;
-            do {
+            while(loop && i != j) {
                 if(j < 0){
                     j += m;
                 }else if (j == i) {
@@ -354,12 +354,12 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
                     else{
                         tab[j] = newNode(hash,0, key, value, null);
                     }
-                    return null;
+                    loop = false;
                 } else if (p.hash == hash && (p.key == key || key.equals(p.key))) {
                     return p;
                 }
                 j = j - c;
-            }while(loop);
+            }
         }
         return null;
     }
@@ -408,7 +408,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
             afterNodeAccess(p);
             return oldVal;
         }
-        if(++size > threshold){
+        if(++size > threshold - 1){
             resize();
         }
         return null;
@@ -437,7 +437,7 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
      */
     final Node<K,V>[] resize() {
         Node<K,V>[] oldTab = table;
-        int oldCap = sizes[sizePos];
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
         int oldThr = threshold;
         int newCap, newThr = 0;
         if (oldCap > 0) {

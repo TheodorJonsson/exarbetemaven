@@ -17,6 +17,7 @@ public class Main {
     public static float dhload = 0.6f;
     public static float chload = 0.6f;
     public static float defaultload = 0.6f;
+    public static int[] iterationsPrime = {1646237, 3292489, 6584983, 13169977};
     public static int[] iterations = {1000000, 2000000, 3000000, 4000000};
     public static int[] capacity = {11, 10000, 100000, 1000000, 1000000, 10000000, 100000000};
     public static float[] loadFactors = {0.05f, 0.1f, 0.15f, 0.2f, 0.25f, 0.3f, 0.35f, 0.40f, 0.45f, 0.5f, 0.55f, 0.6f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1f};
@@ -33,7 +34,7 @@ public class Main {
          * For JoularJX
          */
         //runExperiment1();
-        //runExperiment2();
+        runExperiment2();
         //runExperiment3();
         //runExperiment4();
         //runExperiment5();
@@ -41,8 +42,8 @@ public class Main {
          * Load factor testing
          */
         //runExperiment1load();
-        //runExperiment4Load();
-        runExperiment5Load();
+       // runExperiment4Load();
+        //runExperiment5Load();
     }
 
 
@@ -57,19 +58,21 @@ public class Main {
         Experiment1 exp1 = new Experiment1();
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp1.chSetup(iterations[i]);
+                exp1.chSetup(iterationsPrime[i]);
                 exp1.chInsertTest(exp1.randomLists.get(i));
             }
         }
+        System.out.println("Done with coalesced");
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp1.dhSetup(iterations[i]);
+                exp1.dhSetup(iterationsPrime[i]);
                 exp1.dhInsertTest(exp1.randomLists.get(i));
             }
         }
+        System.out.println("Done with double");
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp1.defaultSetup(iterations[i]);
+                exp1.defaultSetup(iterationsPrime[i]);
                 exp1.defaultInsertTest(exp1.randomLists.get(i));
 
             }
@@ -85,23 +88,28 @@ public class Main {
      */
     private static void runExperiment2(){
         int runs = 20, capacities = 4;
-        Experiment2 exp2 = new Experiment2();
-        for(int i = 0; i < capacities; i++){
-            for(int j = 0; j < runs; j++) {
-                exp2.chSetup(capacity[i], loadFactors[j]);
-                exp2.chInsertTest(exp2.randomLists.get(i));
-            }
-        }
+        Experiment2Joular exp2 = new Experiment2Joular();
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
                 exp2.dhSetup(capacity[i], loadFactors[j]);
-                exp2.dhInsertTest(exp2.randomLists.get(i));
+                exp2.dhInsertTest(exp2.randomLists.get(0), loadFactors[j]);
+                System.out.println("done with " + loadFactors[j]);
             }
         }
+        System.out.println("Done with double");
+        for(int i = 0; i < capacities; i++){
+            for(int j = 0; j < runs; j++) {
+                exp2.chSetup(capacity[i], loadFactors[j]);
+                exp2.chInsertTest(exp2.randomLists.get(0), loadFactors[j]);
+                System.out.println("done with " + loadFactors[j]);
+            }
+
+        }
+        System.out.println("Done with coalesced");
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
                 exp2.defaultSetup(capacity[i], loadFactors[j]);
-                exp2.defaultInsertTest(exp2.randomLists.get(i));
+                exp2.defaultInsertTest(exp2.randomLists.get(0), loadFactors[j]);
 
             }
         }
@@ -130,7 +138,7 @@ public class Main {
         }
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp3.defaultSetup(iterations[i], defaultload);
+                exp3.defaultSetup(iterationsPrime[i], defaultload);
                 exp3.defaultInsertTest(exp3.randomLists.get(i));
 
             }
@@ -148,20 +156,22 @@ public class Main {
         Experiment4 exp4 = new Experiment4();
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp4.chSetup(iterations[i], 1f);
-                exp4.chLookupTest(exp4.randomLists.get(i));
+                exp4.chSetup(iterationsPrime[0], 1f);
+                exp4.chLookupTest(exp4.randomLists.get(0));
             }
         }
+        System.out.println("Done with coalesced hashing");
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp4.dhSetup(iterations[i], 1f);
-                exp4.dhLookupTest(exp4.randomLists.get(i));
+                exp4.dhSetup(iterationsPrime[0], 1f);
+                exp4.dhLookupTest(exp4.randomLists.get(0));
             }
         }
+        System.out.println("Done with double hashing");
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp4.defaultSetup(iterations[i], 1f);
-                exp4.defaultLookupTest(exp4.randomLists.get(i));
+                exp4.defaultSetup(iterationsPrime[0], 1f);
+                exp4.defaultLookupTest(exp4.randomLists.get(0));
 
             }
         }
@@ -178,23 +188,26 @@ public class Main {
         Experiment5 exp5 = new Experiment5();
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp5.chSetup(iterations[i], 1f);
+                exp5.chSetup(iterationsPrime[i], 1f);
                 exp5.chLookupTest(exp5.randomLists.get(0));
             }
         }
+        System.out.println("Done with coalesced hashing");
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp5.dhSetup(iterations[i], 1f);
+                exp5.dhSetup(iterationsPrime[i], 1f);
                 exp5.dhLookupTest(exp5.randomLists.get(0));
             }
         }
+        System.out.println("Done with double hashing");
         for(int i = 0; i < capacities; i++){
             for(int j = 0; j < runs; j++) {
-                exp5.defaultSetup(iterations[i], 1f);
+                exp5.defaultSetup(iterationsPrime[i], 1f);
                 exp5.defaultLookupTest(exp5.randomLists.get(0));
 
             }
         }
+        System.out.println("Done with Default hashing");
     }
 
     /************************* Load Factor Tests ******************************************************/
@@ -205,25 +218,25 @@ public class Main {
         Experiment1Loadfactor exp1 = new Experiment1Loadfactor();
         //int[] capAndIter = {10000000, 20000000, 30000000, 40000000};
         for(int i = 0; i < capacities; i++){
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp1.chSetup(iterations[i]);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp1.chSetup(iterationsPrime[i]);
             sums = (exp1.chInsertTest(exp1.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment1-Coalesced", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment1-Coalesced", iterationsPrime[i], capacities, sums);
         }
         for(int i = 0; i < capacities; i++){
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp1.defaultSetup(iterations[i]);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp1.defaultSetup(iterationsPrime[i]);
             sums = (exp1.defaultInsertTest(exp1.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment1-Default: ", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment1-Default: ", iterationsPrime[i], capacities, sums);
         }
         for(int i = 0; i < capacities; i++){
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp1.dhSetup(iterations[i]);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp1.dhSetup(iterationsPrime[i]);
             sums = (exp1.dhInsertTest(exp1.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment1-Double: ", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment1-Double: ", iterationsPrime[i], capacities, sums);
         }
     }
 
@@ -235,25 +248,25 @@ public class Main {
         ArrayList<String[]> sums = new ArrayList<>();
         Experiment4Loadfactor exp4 = new Experiment4Loadfactor();
         for(int i = 0; i < capacities; i++) {
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp4.chSetup(iterations[i], 1f);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp4.chSetup(iterationsPrime[i], 1f);
             sums = (exp4.chLookupTest(exp4.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment4-Coalesced: ", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment4-Coalesced: ", iterationsPrime[i], capacities, sums);
         }
         for(int i = 0; i < capacities; i++){
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp4.dhSetup(iterations[i], 1f);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp4.dhSetup(iterationsPrime[i], 1f);
             sums = (exp4.dhLookupTest(exp4.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment4-Double: ", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment4-Double: ", iterationsPrime[i], capacities, sums);
         }
         for(int i = 0; i < capacities; i++){
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp4.defaultSetup(iterations[i], 1f);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp4.defaultSetup(iterationsPrime[i], 1f);
             sums = (exp4.defaultLookupTest(exp4.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment4-default: ", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment4-default: ", iterationsPrime[i], capacities, sums);
         }
     }
 
@@ -265,25 +278,25 @@ public class Main {
         ArrayList<String[]> sums = new ArrayList<>();
         Experiment5LoadFactor exp5 = new Experiment5LoadFactor();
         for(int i = 0; i < capacities; i++) {
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp5.chSetup(iterations[i], 1f);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp5.chSetup(iterationsPrime[i], 1f);
             sums = (exp5.chLookupTest(exp5.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment5-Coalesced: ", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment5-Coalesced: ", iterationsPrime[i], capacities, sums);
         }
         for(int i = 0; i < capacities; i++){
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp5.dhSetup(iterations[i], 1f);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp5.dhSetup(iterationsPrime[i], 1f);
             sums = (exp5.dhLookupTest(exp5.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment5-Double: ", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment5-Double: ", iterationsPrime[i], capacities, sums);
         }
         for(int i = 0; i < capacities; i++){
-            System.out.println("Capacity: " + iterations[i] + " Starting......");
-            exp5.defaultSetup(iterations[i], 1f);
+            System.out.println("Capacity: " + iterationsPrime[i] + " Starting......");
+            exp5.defaultSetup(iterationsPrime[i], 1f);
             sums = (exp5.defaultLookupTest(exp5.randomLists.get(i)));
-            System.out.println("Capacity: " + iterations[i] + " done");
-            writeToCSVFile("experiment5-default: ", iterations[i], capacities, sums);
+            System.out.println("Capacity: " + iterationsPrime[i] + " done");
+            writeToCSVFile("experiment5-default: ", iterationsPrime[i], capacities, sums);
         }
     }
 

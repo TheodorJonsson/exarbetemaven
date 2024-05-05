@@ -14,13 +14,14 @@ import java.util.Random;
  * The best performing load factor will be selected and used in experiment 3.
  * The runtime of each run and the energy consumption of each run will be measured in this experiment
  */
+import static ens18trn.cs.umu.se.Main.iterationsPrime;
 import static ens18trn.cs.umu.se.Main.iterations;
 public class Experiment2 {
     public HashMap defaultHash;
     public HashMapCoalesced chHash;
     public HashMapDouble dhHash;
     public ArrayList<ArrayList<Integer>> randomLists = new ArrayList<>();
-    public ArrayList<Integer> randomList1 = new ArrayList<>(iterations[0]);
+    public ArrayList<Integer> randomList1 = new ArrayList<>(iterationsPrime[0]);
     //public ArrayList<Integer> randomList2 = new ArrayList<>(capAndIter[1]);
     //public ArrayList<Integer> randomList3 = new ArrayList<>(capAndIter[2]);
     //public ArrayList<Integer> randomList4 = new ArrayList<>(capAndIter[3]);

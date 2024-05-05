@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import static ens18trn.cs.umu.se.Main.iterations;
+import static ens18trn.cs.umu.se.Main.iterationsPrime;
 /**
  * Experiment 1: insertion only
  *
@@ -50,7 +50,7 @@ public class Experiment1Loadfactor {
         rand3.setSeed(6798);
         Random rand4 = new Random();
         rand4.setSeed(6354);
-        while(randomList1.size() < iterations[0]){
+        while(randomList1.size() < iterationsPrime[0]){
             int rand = rand1.nextInt(1000000000);
             if(!randomList1.contains(rand)){
                 randomList1.add(rand);
@@ -58,7 +58,7 @@ public class Experiment1Loadfactor {
         }
         System.out.println("first arraylist done");
         randomLists.add(randomList1);
-        while(randomList2.size() < iterations[1]){
+        while(randomList2.size() < iterationsPrime[1]){
             int rand = rand2.nextInt(1000000000);
 
             if(!randomList2.contains(rand)){
@@ -67,7 +67,7 @@ public class Experiment1Loadfactor {
         }
         System.out.println("second arraylist done");
         randomLists.add(randomList2);
-        while(randomList3.size() < iterations[2]){
+        while(randomList3.size() < iterationsPrime[2]){
             int rand = rand3.nextInt(1000000000);
             if(!randomList3.contains(rand)){
                 randomList3.add(rand);
@@ -76,7 +76,7 @@ public class Experiment1Loadfactor {
         }
         System.out.println("third arraylist done");
         randomLists.add(randomList3);
-        while(randomList4.size() < iterations[3]){
+        while(randomList4.size() < iterationsPrime[3]){
             int rand = rand4.nextInt(1000000000);
             if(!randomList4.contains(rand)){
                 randomList4.add(rand);

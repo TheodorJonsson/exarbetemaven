@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import static ens18trn.cs.umu.se.Main.iterations;
+import static ens18trn.cs.umu.se.Main.iterationsPrime;
 
 public class Experiment2Joular {
     public HashMap defaultHash;
@@ -22,26 +22,26 @@ public class Experiment2Joular {
     }
 
     private void setup() {
-        for(int i = 0; i < iterations[0]; i++){
+        for(int i = 0; i < iterationsPrime[0]; i++){
             randomList1.add(i);
         }
-        for(int i = 0; i < iterations[1]; i++){
+        /*for(int i = 0; i < iterationsPrime[1]; i++){
             randomList2.add(i);
         }
-        for(int i = 0; i < iterations[2]; i++){
+        for(int i = 0; i < iterationsPrime[2]; i++){
             randomList3.add(i);
         }
-        for(int i = 0; i < iterations[3]; i++){
+        for(int i = 0; i < iterationsPrime[3]; i++){
             randomList4.add(i);
-        }
+        }*/
         Collections.shuffle(randomList1, new Random(1234));
-        Collections.shuffle(randomList2, new Random(3456));
+       /* Collections.shuffle(randomList2, new Random(3456));
         Collections.shuffle(randomList2, new Random(6798));
-        Collections.shuffle(randomList2, new Random(6354));
+        Collections.shuffle(randomList2, new Random(6354));*/
         randomLists.add(randomList1);
-        randomLists.add(randomList2);
+       /* randomLists.add(randomList2);
         randomLists.add(randomList3);
-        randomLists.add(randomList4);
+        randomLists.add(randomList4);*/
     }
     /**
      * Coalesced hashing HashMap setup

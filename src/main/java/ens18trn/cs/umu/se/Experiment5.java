@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import static ens18trn.cs.umu.se.Main.iterations;
+import static ens18trn.cs.umu.se.Main.iterationsPrime;
 
 public class Experiment5 {
     public HashMap defaultHash;
@@ -33,14 +33,16 @@ public class Experiment5 {
         rand3.setSeed(6798);
         Random rand4 = new Random();
         rand4.setSeed(6354);
-        for(int i = 0; i < iterations[0]; i++){
+        for(int i = 0; i < iterationsPrime[0]; i++){
             randomList1.add(i);
         }
-        for(int i = iterations[0]; i < iterations[1]; i++){
+        for(int i = iterationsPrime[0]; i < iterationsPrime[1]; i++){
             randomList2.add(i);
         }
         Collections.shuffle(randomList1, new Random(1234));
         Collections.shuffle(randomList2, new Random(3456));
+        randomLists.add(randomList1);
+        randomLists.add(randomList2);
         System.out.println("Starting Experiment 5");
         /*while(randomList1.size() < iterations[0]){
             int rand = rand1.nextInt();
@@ -72,7 +74,7 @@ public class Experiment5 {
      * Coalesced hashing insertion test
      */
     public void chLookupTest(ArrayList<Integer> iterations){
-        float x = 0.05f;
+        float x = 0.00f;
         for(Integer i = 0; i < iterations.size(); i++){
             chHash.put(iterations.get(i), "0");
             if(i > iterations.size() * x){
@@ -97,7 +99,7 @@ public class Experiment5 {
      * @param insertions, amount of insertions to be done and measured.
      */
     public void dhLookupTest(ArrayList<Integer> iterations){
-        float x = 0.05f;
+        float x = 0.00f;
         for(Integer i = 0; i < iterations.size(); i++){
             dhHash.put(iterations.get(i), "0");
             if(i > iterations.size() * x){
@@ -123,8 +125,7 @@ public class Experiment5 {
      * @return
      */
     public void defaultLookupTest(ArrayList<Integer> iterations){
-        float x = 0.05f;
-        System.out.println("Started test");
+        float x = 0.00f;
         for(Integer i = 0; i < iterations.size(); i++){
             defaultHash.put(iterations.get(i), "0");
             if(i > iterations.size() * x){
@@ -137,45 +138,45 @@ public class Experiment5 {
     }
 
     private void lookupTest(Integer i, float x, HashMap hash) {
-        if (x <= 0.05f && x > 0.0f) {
+        if (x <= 0.05f && (x >= 0.0f)) {
             lookup05(i, x, hash);
-        } else if (x > 0.05f && x < 0.1f) {
+        } else if (x > 0.05f && x <= 0.1f) {
             lookup10(i, x, hash);
-        } else if (x >= 0.1f && x <= 0.15f) {
+        } else if (x > 0.1f && x <= 0.15f) {
             lookup15(i, x, hash);
-        } else if (x >= 0.15f && x <= 0.2f) {
+        } else if (x > 0.15f && x <= 0.2f) {
             lookup20(i, x, hash);
-        } else if (x >= 0.2f && x <= 0.25f) {
+        } else if (x > 0.2f && x <= 0.25f) {
             lookup25(i, x, hash);
-        } else if (x >= 0.25f && x <= 0.3f) {
+        } else if (x > 0.25f && x <= 0.3f) {
             lookup30(i, x, hash);
-        } else if (x >= 0.3f && x <= 0.35f) {
+        } else if (x > 0.3f && x <= 0.35f) {
             lookup35(i, x, hash);
-        } else if (x >= 0.35f && x <= 0.4f) {
+        } else if (x > 0.35f && x <= 0.4f) {
             lookup40(i, x, hash);
-        } else if (x >= 0.4f && x <= 0.45f) {
+        } else if (x > 0.4f && x <= 0.45f) {
             lookup45(i, x, hash);
-        } else if (x >= 0.45f && x <= 0.5f) {
+        } else if (x > 0.45f && x <= 0.5f) {
             lookup50(i, x, hash);
-        } else if (x >= 0.5f && x <= 0.55f) {
+        } else if (x > 0.5f && x <= 0.55f) {
             lookup55(i, x, hash);
-        } else if (x >= 0.55f && x <= 0.6f) {
+        } else if (x > 0.55f && x <= 0.6f) {
             lookup60(i, x, hash);
-        } else if (x >= 0.6f && x <= 0.65f) {
+        } else if (x > 0.6f && x <= 0.65f) {
             lookup65(i, x, hash);
-        } else if (x >= 0.65f && x <= 0.7f) {
+        } else if (x > 0.65f && x <= 0.7f) {
             lookup70(i, x, hash);
-        } else if (x >= 0.7f && x <= 0.75f) {
+        } else if (x > 0.7f && x <= 0.75f) {
             lookup75(i, x, hash);
-        } else if (x >= 0.75f && x <= 0.8f) {
+        } else if (x > 0.75f && x <= 0.8f) {
             lookup80(i, x, hash);
-        } else if (x >= 0.8f && x <= 0.85f) {
+        } else if (x > 0.8f && x <= 0.85f) {
             lookup85(i, x, hash);
-        } else if (x >= 0.85f && x <= 0.9f) {
+        } else if (x > 0.85f && x <= 0.9f) {
             lookup90(i, x, hash);
-        } else if (x >= 0.9f && x <= 0.95f) {
+        } else if (x > 0.9f && x <= 0.95f) {
             lookup95(i, x, hash);
-        } else if (x >= 0.95f && x <= 1f) {
+        } else if (x > 0.95f && x <= 1f) {
             lookup100(i, x, hash);
         }
     }
