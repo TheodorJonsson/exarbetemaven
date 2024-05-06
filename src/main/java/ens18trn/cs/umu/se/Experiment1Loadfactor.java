@@ -2,6 +2,7 @@ package ens18trn.cs.umu.se;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import static ens18trn.cs.umu.se.Main.iterationsPrime;
@@ -50,38 +51,25 @@ public class Experiment1Loadfactor {
         rand3.setSeed(6798);
         Random rand4 = new Random();
         rand4.setSeed(6354);
-        while(randomList1.size() < iterationsPrime[0]){
-            int rand = rand1.nextInt(1000000000);
-            if(!randomList1.contains(rand)){
-                randomList1.add(rand);
-            }
+        for(int i = 0; i < iterationsPrime[0]; i++){
+            randomList1.add(i);
         }
-        System.out.println("first arraylist done");
+        for(int i = 0; i < iterationsPrime[1]; i++){
+            randomList2.add(i);
+        }
+        for(int i = 0; i < iterationsPrime[2]; i++){
+            randomList3.add(i);
+        }
+        for(int i = 0; i < iterationsPrime[3]; i++){
+            randomList4.add(i);
+        }
+        Collections.shuffle(randomList1, new Random(1234));
+        Collections.shuffle(randomList2, new Random(3456));
+        Collections.shuffle(randomList2, new Random(6798));
+        Collections.shuffle(randomList2, new Random(6354));
         randomLists.add(randomList1);
-        while(randomList2.size() < iterationsPrime[1]){
-            int rand = rand2.nextInt(1000000000);
-
-            if(!randomList2.contains(rand)){
-                randomList2.add(rand);
-            }
-        }
-        System.out.println("second arraylist done");
         randomLists.add(randomList2);
-        while(randomList3.size() < iterationsPrime[2]){
-            int rand = rand3.nextInt(1000000000);
-            if(!randomList3.contains(rand)){
-                randomList3.add(rand);
-            }
-
-        }
-        System.out.println("third arraylist done");
         randomLists.add(randomList3);
-        while(randomList4.size() < iterationsPrime[3]){
-            int rand = rand4.nextInt(1000000000);
-            if(!randomList4.contains(rand)){
-                randomList4.add(rand);
-            }
-        }
         randomLists.add(randomList4);
         System.out.println("Done with arraylists");
     }
