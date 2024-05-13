@@ -61,10 +61,10 @@ public class Experiment1Joular {
         System.out.println("third list done");
         Collections.shuffle(randomList4, new Random(6354));
         System.out.println("fourth list done");
-        randomLists.add(randomList1);
-        randomLists.add(randomList2);
-        randomLists.add(randomList3);
-        randomLists.add(randomList4);
+        randomLists.add(0, randomList1);
+        randomLists.add(1, randomList2);
+        randomLists.add(2, randomList3);
+        randomLists.add(3, randomList4);
     }
 
 
@@ -276,7 +276,7 @@ public class Experiment1Joular {
     }
 
     private void insertTo100(ArrayList<Integer> iterations, HashMap<Integer, String> hash) {
-        for (Integer i = hash.size(); i < iterations.size(); i++) {
+        for (Integer i = hash.size(); i < iterations.size() - 1; i++) {
             hash.put(iterations.get(i), "0");
         }
     }

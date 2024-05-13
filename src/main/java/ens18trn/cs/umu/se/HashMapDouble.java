@@ -478,5 +478,9 @@ public class HashMapDouble<K,V> extends HashMap<K, V> {
         return new Node<>(hash, dhash, key, value, next);
     }
     void afterNodeAccess(Node<K,V> p) { }
+    @Override
+    public int size(){
+        return this.size;
+    }
 }
 

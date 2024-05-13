@@ -73,21 +73,20 @@ public class Experiment5LoadFactor {
     /**
  * Coalesced hashing insertion test
  */
-public ArrayList<String[]> chLookupTest(ArrayList<Integer> iterations){
-    float x = 0.05f;
-    System.out.println("Started test");
-    ArrayList<String[]> sums = new ArrayList();
-    int j = 0;
-    for(Integer i = 0; i < iterations.size(); i++){
-        chHash.put(iterations.get(i), "0");
-        if(i > iterations.size() * x){
-            sums.add(j, lookupTest(i, x, chHash));
-            j++;
-            x += 0.05f;
+    public ArrayList<Integer> chLookupTest(ArrayList<Integer> iterations, ArrayList<Integer> sums){
+        float x = 0.05f;
+        System.out.println("Started test");
+        int j = 0;
+        for(Integer i = 0; i < iterations.size(); i++){
+            chHash.put(iterations.get(i), "0");
+            if(i > iterations.size() * x){
+                sums.set(j, sums.get(j) +  + lookupTest(i, x, chHash));
+                j++;
+                x += 0.05f;
+            }
         }
+        return sums;
     }
-    return sums;
-}
 
 /**
  * Double hashing HashMap setup
@@ -102,15 +101,14 @@ public void dhSetup(int capacity, float loadFactor){
  * Double hashing insertion test.
  * @param insertions, amount of insertions to be done and measured.
  */
-public ArrayList<String[]> dhLookupTest(ArrayList<Integer> iterations){
+public ArrayList<Integer> dhLookupTest(ArrayList<Integer> iterations, ArrayList<Integer> sums){
     float x = 0.05f;
     System.out.println("Started test");
-    ArrayList<String[]> sums = new ArrayList();
     int j = 0;
     for(Integer i = 0; i < iterations.size(); i++){
         dhHash.put(iterations.get(i), "0");
         if(i > iterations.size() * x){
-            sums.add(j, lookupTest(i, x, dhHash));
+            sums.set(j, sums.get(j) +  + lookupTest(i, x, dhHash));
             j++;
             x += 0.05f;
         }
@@ -132,15 +130,14 @@ public void defaultSetup(int capacity, float loadFactor){
  * Default HashMap insertion test.
  * @return
  */
-public ArrayList<String[]> defaultLookupTest(ArrayList<Integer> iterations){
+public ArrayList<Integer> defaultLookupTest(ArrayList<Integer> iterations, ArrayList<Integer> sums){
     float x = 0.05f;
     System.out.println("Started test");
-    ArrayList<String[]> sums = new ArrayList();
     int j = 0;
     for(Integer i = 0; i < iterations.size(); i++){
         defaultHash.put(iterations.get(i), "0");
         if(i > iterations.size() * x){
-            sums.add(j, lookupTest(i, x, defaultHash));
+            sums.set(j, sums.get(j) +  + lookupTest(i, x, defaultHash));
             j++;
             x += 0.05f;
         }
@@ -148,7 +145,7 @@ public ArrayList<String[]> defaultLookupTest(ArrayList<Integer> iterations){
     return sums;
 }
 
-    private String[] lookupTest(Integer i, float x, HashMap hash) {
+    private Integer lookupTest(Integer i, float x, HashMap hash) {
         long sums = 0;
         for(int j = 0; j < 1000000; j++){
             long startTime = System.nanoTime();
@@ -157,14 +154,14 @@ public ArrayList<String[]> defaultLookupTest(ArrayList<Integer> iterations){
             long endTime = System.nanoTime();
             sums += endTime - startTime;
         }
-        long durationInMS = TimeUnit.NANOSECONDS.toMillis(sums);
+        Integer durationInMS = Math.toIntExact(TimeUnit.NANOSECONDS.toMillis(sums));
 
-        x += 0.05f;
+        /*x += 0.05f;
         DecimalFormat df = new DecimalFormat("##.00");
         x = Float.parseFloat(df.format(x));
         System.out.println("Load factor: " + x +" duration: " + durationInMS);
-        String[] dataLine = new String[]{Float.toString(x), Long.toString(durationInMS)};
-        return dataLine;
+        String[] dataLine = new String[]{Float.toString(x), Long.toString(durationInMS)};*/
+        return durationInMS;
     }
 }
 

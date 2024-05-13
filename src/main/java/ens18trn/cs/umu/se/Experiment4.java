@@ -28,7 +28,7 @@ public class Experiment4 {
         for(int i = 0; i < iterationsPrime[0]; i++){
             randomList1.add(i);
         }
-        /*for(int i = 0; i < iterationsPrime[1]; i++){
+        for(int i = 0; i < iterationsPrime[1]; i++){
             randomList2.add(i);
         }
         for(int i = 0; i < iterationsPrime[2]; i++){
@@ -37,14 +37,14 @@ public class Experiment4 {
         for(int i = 0; i < iterationsPrime[3]; i++){
             randomList4.add(i);
         }
-        Collections.shuffle(randomList1, new Random(1234));
+        Collections.shuffle(randomList1, new Random(2342));
         Collections.shuffle(randomList2, new Random(3456));
         Collections.shuffle(randomList2, new Random(6798));
-        Collections.shuffle(randomList2, new Random(6354));*/
+        Collections.shuffle(randomList2, new Random(6354));
         randomLists.add(randomList1);
-        /*randomLists.add(randomList2);
+        randomLists.add(randomList2);
         randomLists.add(randomList3);
-        randomLists.add(randomList4);*/
+        randomLists.add(randomList4);
     }
     /**
      * Coalesced hashing HashMap setup

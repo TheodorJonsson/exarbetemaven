@@ -324,24 +324,30 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
         else if (p.hash == hash && (p.key == key || key.equals(p.key))) {
             return p;
         }
-        boolean loop = m < sizes[28];
-        while(lastPlacedPos > 0 && loop){
-            if(tab[lastPlacedPos] == null){
-                if(oldNode != null) {
-                    tab[lastPlacedPos] = oldNode;
-                    tab[lastPlacedPos].next = null;
+        else{
+            boolean loop = m < sizes[28];
+            while(lastPlacedPos > 0 && loop){
+                if(tab[lastPlacedPos] == null){
+                    if(oldNode != null) {
+                        tab[lastPlacedPos] = oldNode;
+                        tab[lastPlacedPos].next = null;
+                    }
+                    else{
+                        tab[lastPlacedPos] = newNode(hash, key, value, null);
+                    }
+                    while(p.next != null){
+                        p = p.next;
+                    }
+                    p.next = tab[lastPlacedPos];
+                    loop = false;
+                    return null;
+                } else if (p.hash == hash && (p.key == key || key.equals(p.key))) {
+                    return p;
                 }
-                else{
-                    tab[lastPlacedPos] = newNode(hash, key, value, null);
-                }
-                while(p.next != null){
-                    p = p.next;
-                }
-                p.next = tab[lastPlacedPos];
-                loop = false;
+                lastPlacedPos--;
             }
-            lastPlacedPos--;
         }
+
         return null;
     }
 
@@ -453,4 +459,8 @@ public class HashMapCoalesced<K,V> extends HashMap<K, V> {
     }
     void afterNodeAccess(Node<K,V> p) { }
 
+    @Override
+    public int size(){
+        return this.size;
+    }
 }
